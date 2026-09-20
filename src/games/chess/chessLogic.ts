@@ -950,17 +950,25 @@ export function fromFEN(fen: string): ChessGameState {
     const rankIndex = 7 - r;
     let file = 0;
     for (const char of ranks[r]) {
-      if (file > 7) {
-        throw new Error(`Invalid FEN: rank exceeds 8 squares`);
-      }
       if (char >= '1' && char <= '8') {
         file += parseInt(char, 10);
-      } else {
+        if (file > 8) {
+          throw new Error(`Invalid FEN: rank exceeds 8 squares`);
+        }
+      } else if (/^[pnbrqkPNBRQK]$/.test(char)) {
+        if (file >= 8) {
+          throw new Error(`Invalid FEN: rank exceeds 8 squares`);
+        }
         const color: PieceColor = char === char.toUpperCase() ? 'w' : 'b';
         const type = char.toLowerCase() as PieceType;
         board[rankIndex * 8 + file] = { color, type };
         file++;
+      } else {
+        throw new Error(`Invalid FEN piece character: "${char}"`);
       }
+    }
+    if (file !== 8) {
+      throw new Error(`Invalid FEN: rank must contain exactly 8 squares, got ${file}`);
     }
   }
 

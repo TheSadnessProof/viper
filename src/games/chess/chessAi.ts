@@ -1,5 +1,5 @@
-import type { ChessGameState, Move, PieceColor, PieceType, Square } from './chessTypes';
-import { getLegalMoves, makeMove } from './chessLogic';
+import type { ChessGameState, Move, PieceColor, PieceType, Square } from './chessTypes.ts';
+import { getLegalMoves, makeMove } from './chessLogic.ts';
 
 export type ChessDifficulty = 'casual' | 'blitz' | 'grandmaster';
 

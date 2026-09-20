@@ -1,5 +1,5 @@
-import { findBestMove, ChessDifficulty } from './chessAi';
-import type { ChessGameState } from './chessTypes';
+import { findBestMove, ChessDifficulty } from './chessAi.ts';
+import type { ChessGameState } from './chessTypes.ts';
 
 interface WorkerRequest {
   id: string;
