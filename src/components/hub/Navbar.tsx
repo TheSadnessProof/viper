@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { SnakeLogo } from '../common/SnakeLogo';
-import { User, Swords, Layers, LayoutGrid } from 'lucide-react';
+import { User, Swords, Layers, LayoutGrid, LayoutDashboard } from 'lucide-react';
 
-export type NavCategory = 'pvp' | 'cards' | 'board';
+export type NavCategory = 'lobby' | 'pvp' | 'cards' | 'board';
 
 interface NavbarProps {
   activeCategory?: NavCategory;
@@ -13,7 +13,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeCategory: controlledCategory,
   onSelectCategory,
 }) => {
-  const [internalCategory, setInternalCategory] = useState<NavCategory>('pvp');
+  const [internalCategory, setInternalCategory] = useState<NavCategory>('lobby');
   const active = controlledCategory ?? internalCategory;
 
   const handleSelect = (cat: NavCategory) => {
@@ -22,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const categories = [
+    { id: 'lobby' as const, label: 'Lobby', icon: LayoutDashboard },
     { id: 'pvp' as const, label: 'PvP', icon: Swords, badge: '1v1' },
     { id: 'cards' as const, label: 'Cards', icon: Layers },
     { id: 'board' as const, label: 'Board', icon: LayoutGrid },
@@ -31,7 +32,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo & Name */}
-        <div className="flex items-center gap-3 cursor-pointer group">
+        <div
+          onClick={() => handleSelect('lobby')}
+          className="flex items-center gap-3 cursor-pointer group"
+        >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#850120] via-rose-950 to-slate-900 border border-rose-900/50 flex items-center justify-center shadow-lg shadow-rose-950/40 group-hover:scale-105 transition-transform duration-200 p-1.5">
             <SnakeLogo size={26} color="#ffffff" glow />
           </div>
@@ -58,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-amber-300' : 'text-slate-400'}`} />
                 <span>{cat.label}</span>
-                {cat.badge && (
+                {'badge' in cat && cat.badge && (
                   <span
                     className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-extrabold ${
                       isSelected
