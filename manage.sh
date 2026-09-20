@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# DuelArena Platform Manager
+# Game Platform Manager
 # Usage: ./manage.sh [start|stop|restart|setup|push]
 # ==============================================================================
-
-set -e
 
 PID_FILE=".server.pid"
 LOG_FILE=".server.log"
@@ -13,94 +11,88 @@ get_current_branch() {
   git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "web-game-platform"
 }
 
-is_running() {
-  if [ -f "$PID_FILE" ]; then
-    PID=$(cat "$PID_FILE" 2>/dev/null || true)
-    if [ -n "$PID" ]; then
-      if ps -p "$PID" > /dev/null 2>&1 || taskkill //FI "PID eq $PID" 2>&1 | grep -q "$PID"; then
-        return 0
-      fi
-    fi
+is_port_listening() {
+  if command -v powershell.exe >/dev/null 2>&1; then
+    powershell.exe -NoProfile -Command "if (Get-NetTCPConnection -LocalPort 5000 -State Listen -ErrorAction SilentlyContinue) { exit 0 } else { exit 1 }"
+    return $?
+  else
+    lsof -i :5000 >/dev/null 2>&1
+    return $?
   fi
-  return 1
 }
 
 start_server() {
-  if is_running; then
-    echo "⚠️  Server is already running (PID: $(cat "$PID_FILE"))."
-    echo "   URL: http://localhost:5000"
+  if is_port_listening; then
+    echo "[!] Server is already running on port 5000."
+    echo "    URL: http://localhost:5000"
     return 0
   fi
 
-  echo "🚀 Starting development server..."
-  nohup npm run dev > "$LOG_FILE" 2>&1 &
-  PID=$!
-  echo "$PID" > "$PID_FILE"
+  echo "[+] Starting development server on port 5000..."
+
+  if command -v powershell.exe >/dev/null 2>&1 && [[ "$(uname -s)" =~ (MINGW|MSYS|CYGWIN) ]]; then
+    powershell.exe -NoProfile -Command "Start-Process node -ArgumentList 'node_modules/vite/bin/vite.js', '--port', '5000' -WindowStyle Hidden"
+  else
+    nohup node node_modules/vite/bin/vite.js --port 5000 > "$LOG_FILE" 2>&1 &
+    echo "$!" > "$PID_FILE"
+  fi
 
   sleep 2
-  echo "✅ Server started in background (PID: $PID)."
-  echo "   Logs: $LOG_FILE"
-  echo "   URL:  http://localhost:5000"
+  echo "[OK] Server started in background."
+  echo "     URL: http://localhost:5000"
 }
 
 stop_server() {
+  echo "[*] Stopping server on port 5000..."
+
   if [ -f "$PID_FILE" ]; then
     PID=$(cat "$PID_FILE" 2>/dev/null || true)
-    echo "🛑 Stopping server (PID: $PID)..."
-    kill "$PID" 2>/dev/null || true
-    taskkill //F //PID "$PID" 2>/dev/null || true
+    if [ -n "$PID" ]; then
+      kill "$PID" 2>/dev/null || true
+      taskkill //F //PID "$PID" 2>/dev/null || true
+    fi
     rm -f "$PID_FILE"
-    echo "✅ Server stopped."
-  else
-    echo "ℹ️  No PID file found. Stopping any active vite dev processes..."
-    taskkill //F //IM node.exe //FI "WINDOWTITLE eq *vite*" 2>/dev/null || true
-    echo "✅ Done."
   fi
+
+  # Free any process on port 5000
+  if command -v powershell.exe >/dev/null 2>&1; then
+    PORT_PID=$(powershell.exe -NoProfile -Command "(Get-NetTCPConnection -LocalPort 5000 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1).OwningProcess" 2>/dev/null | tr -d '\r\n')
+    if [ -n "$PORT_PID" ] && [ "$PORT_PID" -gt 0 ] 2>/dev/null; then
+      taskkill //F //PID "$PORT_PID" 2>/dev/null || true
+    fi
+  fi
+
+  echo "[OK] Server stopped."
 }
 
 restart_server() {
-  echo "🔄 Restarting server..."
+  echo "[*] Restarting server..."
   stop_server
   sleep 1
   start_server
 }
 
 setup_project() {
-  echo "📦 Setting up DuelArena project dependencies..."
+  echo "[*] Setting up dependencies..."
   if ! command -v node >/dev/null 2>&1; then
-    echo "❌ Error: Node.js is not found in PATH."
+    echo "[!] Node.js not found in PATH."
     exit 1
   fi
-  if ! command -v npm >/dev/null 2>&1; then
-    echo "❌ Error: npm is not found in PATH."
-    exit 1
-  fi
-
-  echo "   Node: $(node -v)"
-  echo "   npm:  $(npm -v)"
-  echo "   Installing packages..."
   npm install
-  echo "✅ Setup complete! Run './manage.sh start' to launch."
+  echo "[OK] Setup complete! Run './manage.sh start' to launch."
 }
 
 push_project() {
   BRANCH=$(get_current_branch)
-  echo "🚀 Committing and pushing all changes on branch '$BRANCH'..."
-
-  echo "1. Staging changes..."
+  echo "[*] Committing and pushing all changes on branch '$BRANCH'..."
   git add -A
-
-  echo "2. Committing with message: 'Auto Commit'..."
   if git diff-index --quiet HEAD -- 2>/dev/null; then
-    echo "ℹ️  Working tree is already clean. Nothing to commit."
+    echo "[i] Nothing to commit, working tree is clean."
   else
     git commit -m "Auto Commit"
   fi
-
-  echo "3. Pushing to origin/$BRANCH..."
   git push -u origin "$BRANCH"
-
-  echo "✅ Successfully pushed to origin/$BRANCH!"
+  echo "[OK] Pushed to origin/$BRANCH!"
 }
 
 case "$1" in
@@ -123,11 +115,11 @@ case "$1" in
     echo "Usage: ./manage.sh {start|stop|restart|setup|push}"
     echo ""
     echo "Commands:"
-    echo "  start    - Launch Vite dev server in background"
+    echo "  start    - Launch dev server on port 5000 in background"
     echo "  stop     - Stop the running server"
     echo "  restart  - Restart the server"
-    echo "  setup    - Install dependencies (npm install)"
-    echo "  push     - Commit all changes with -m 'Auto Commit' and push to git"
+    echo "  setup    - Install dependencies"
+    echo "  push     - Commit with 'Auto Commit' and push to git"
     exit 1
     ;;
 esac
