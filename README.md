@@ -35,7 +35,10 @@ You can manage the project using `./manage.sh` (or `.\manage.ps1` in PowerShell)
 ./manage.sh push
 ```
 
-3. **Production build**:
+3. **Access the Game**:
+   Open `http://localhost:5000` in your browser.
+
+4. **Production build**:
    ```bash
    npm run build
    ```

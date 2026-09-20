@@ -28,7 +28,7 @@ is_running() {
 start_server() {
   if is_running; then
     echo "⚠️  Server is already running (PID: $(cat "$PID_FILE"))."
-    echo "   URL: http://localhost:3000 / http://localhost:3001"
+    echo "   URL: http://localhost:5000"
     return 0
   fi
 
@@ -40,7 +40,7 @@ start_server() {
   sleep 2
   echo "✅ Server started in background (PID: $PID)."
   echo "   Logs: $LOG_FILE"
-  echo "   URL:  http://localhost:3000 (or http://localhost:3001)"
+  echo "   URL:  http://localhost:5000"
 }
 
 stop_server() {

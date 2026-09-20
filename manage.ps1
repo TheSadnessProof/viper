@@ -19,7 +19,7 @@ function Start-Server {
         $existingPid = Get-Content $PID_FILE -ErrorAction SilentlyContinue
         if ($existingPid -and (Get-Process -Id $existingPid -ErrorAction SilentlyContinue)) {
             Write-Host "⚠️  Server is already running (PID: $existingPid)." -ForegroundColor Yellow
-            Write-Host "   URL: http://localhost:3000 / http://localhost:3001"
+            Write-Host "   URL: http://localhost:5000"
             return
         }
     }
@@ -31,7 +31,7 @@ function Start-Server {
     Start-Sleep -Seconds 2
     Write-Host "✅ Server started in background (PID: $($process.Id))." -ForegroundColor Green
     Write-Host "   Logs: $LOG_FILE"
-    Write-Host "   URL:  http://localhost:3000 / http://localhost:3001"
+    Write-Host "   URL:  http://localhost:5000"
 }
 
 function Stop-Server {
