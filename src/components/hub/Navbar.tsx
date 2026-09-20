@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SnakeLogo } from '../common/SnakeLogo';
 import { User, Swords, Layers, LayoutGrid, LayoutDashboard } from 'lucide-react';
 
-export type NavCategory = 'lobby' | 'pvp' | 'cards' | 'board';
+export type NavCategory = 'lobby' | 'cards' | 'board' | 'combat';
 
 interface NavbarProps {
   activeCategory?: NavCategory;
@@ -23,9 +23,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const categories = [
     { id: 'lobby' as const, label: 'Lobby', icon: LayoutDashboard },
-    { id: 'pvp' as const, label: 'PvP', icon: Swords, badge: '1v1' },
-    { id: 'cards' as const, label: 'Cards', icon: Layers },
-    { id: 'board' as const, label: 'Board', icon: LayoutGrid },
+    { id: 'cards' as const, label: 'Cards', icon: Layers, count: 4 },
+    { id: 'board' as const, label: 'Board', icon: LayoutGrid, count: 4 },
+    { id: 'combat' as const, label: 'Combat', icon: Swords },
   ];
 
   return (
@@ -62,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-amber-300' : 'text-slate-400'}`} />
                 <span>{cat.label}</span>
-                {'badge' in cat && cat.badge && (
+                {'count' in cat && cat.count && (
                   <span
                     className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-extrabold ${
                       isSelected
@@ -70,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         : 'bg-slate-800 text-slate-400'
                     }`}
                   >
-                    {cat.badge}
+                    {cat.count}
                   </span>
                 )}
               </button>
