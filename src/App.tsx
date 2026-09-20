@@ -4,6 +4,9 @@ import { LobbyView } from './components/views/LobbyView';
 import { CardsView } from './components/views/CardsView';
 import { BoardView } from './components/views/BoardView';
 import { CombatView } from './components/views/CombatView';
+import { DominoArena } from './components/arena/DominoArena';
+import { JokerArena } from './components/arena/JokerArena';
+import { PokerArena } from './components/arena/PokerArena';
 import { SnakeLogo } from './components/common/SnakeLogo';
 
 function getCategoryFromLocation(): NavCategory {
@@ -25,6 +28,7 @@ function getCategoryFromLocation(): NavCategory {
 
 export const App: React.FC = () => {
   const [currentCategory, setCurrentCategory] = useState<NavCategory>(getCategoryFromLocation);
+  const [activeArena, setActiveArena] = useState<'joker' | 'poker' | 'domino' | null>(null);
 
   const navigateTo = (cat: NavCategory) => {
     setCurrentCategory(cat);
@@ -32,6 +36,12 @@ export const App: React.FC = () => {
     if (window.location.pathname !== targetPath) {
       window.history.pushState(null, '', targetPath);
     }
+  };
+
+  const handleLaunchGame = (gameId: string) => {
+    if (gameId === 'joker') setActiveArena('joker');
+    else if (gameId === 'poker') setActiveArena('poker');
+    else if (gameId === 'domino') setActiveArena('domino');
   };
 
   useEffect(() => {
@@ -43,14 +53,27 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // If a game arena is actively running, render it full screen
+  if (activeArena === 'joker') {
+    return <JokerArena onExit={() => setActiveArena(null)} />;
+  }
+
+  if (activeArena === 'poker') {
+    return <PokerArena onExit={() => setActiveArena(null)} />;
+  }
+
+  if (activeArena === 'domino') {
+    return <DominoArena onExit={() => setActiveArena(null)} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-rose-900 selection:text-white">
       <Navbar activeCategory={currentCategory} onSelectCategory={navigateTo} />
 
       <main className="flex-1 w-full">
         {currentCategory === 'lobby' && <LobbyView onNavigate={navigateTo} />}
-        {currentCategory === 'cards' && <CardsView />}
-        {currentCategory === 'board' && <BoardView />}
+        {currentCategory === 'cards' && <CardsView onPlay={handleLaunchGame} />}
+        {currentCategory === 'board' && <BoardView onPlay={handleLaunchGame} />}
         {currentCategory === 'combat' && <CombatView />}
       </main>
 
