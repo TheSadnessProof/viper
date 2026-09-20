@@ -16,18 +16,24 @@ A modern web gaming hub for real-time 1v1 duels, classical games, and high-stake
 
 ---
 
-## Quick Start
+## Quick Start & Management Script
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+You can manage the project using `./manage.sh` (or `.\manage.ps1` in PowerShell):
 
-2. **Run development server**:
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:3000` in your browser.
+```bash
+# Setup dependencies
+./manage.sh setup
+
+# Start the game server in the background
+./manage.sh start
+
+# Stop or restart the server
+./manage.sh stop
+./manage.sh restart
+
+# Commit all changes and push to git
+./manage.sh push
+```
 
 3. **Production build**:
    ```bash
