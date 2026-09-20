@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, RotateCcw, Shield } from 'lucide-react';
+import { SnakeLogo } from '../common/SnakeLogo';
 
 interface PlayingCard {
   value: string;
@@ -81,12 +82,16 @@ export const PokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
             <ArrowLeft className="w-4 h-4" />
             Exit to Hub
           </button>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
-            <h1 className="font-bold text-lg tracking-tight">Heads-Up Poker Duel</h1>
-            <span className="px-2 py-0.5 text-xs rounded bg-red-950 text-red-300 border border-red-800 font-mono">
-              No-Limit 1v1
-            </span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#850120] to-rose-950 p-1 flex items-center justify-center border border-rose-800 shadow">
+              <SnakeLogo size={20} color="#ffffff" glow />
+            </div>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-lg tracking-tight">Viper Poker Room</h1>
+              <span className="px-2 py-0.5 text-xs rounded bg-red-950 text-rose-300 border border-red-800 font-mono">
+                No-Limit 1v1
+              </span>
+            </div>
           </div>
         </div>
 
@@ -138,7 +143,15 @@ export const PokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
         </div>
 
         {/* Poker Felt Table */}
-        <div className="my-4 flex-1 min-h-[360px] rounded-3xl game-table-felt border-8 border-[#381a04] relative flex flex-col items-center justify-between p-6">
+        <div className="my-4 flex-1 min-h-[360px] rounded-3xl game-table-felt border-8 border-[#381a04] relative flex flex-col items-center justify-between p-6 overflow-hidden">
+          {/* Felt Watermark: Viper Snake Logo & Poker Crest */}
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center select-none z-0">
+            <SnakeLogo size={190} color="#10b981" opacity={0.12} />
+            <span className="font-black text-xl tracking-[0.35em] text-emerald-200 uppercase mt-2 opacity-15">
+              VIPER POKER ROOM
+            </span>
+          </div>
+
           {/* Pot Display */}
           <div className="bg-black/50 border border-amber-500/40 px-6 py-2 rounded-full flex items-center gap-2 shadow-xl">
             <span className="text-xs uppercase text-amber-400 font-semibold tracking-wider">Total Pot:</span>

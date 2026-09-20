@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGamePlatform } from '../../context/GamePlatformContext';
 import { GameId } from '../../types';
 import { Swords, X, Coins, ShieldCheck, Zap } from 'lucide-react';
+import { SnakeLogo } from '../common/SnakeLogo';
 
 export const DuelMatchmakingModal: React.FC = () => {
   const { isMatchmakingOpen, setIsMatchmakingOpen, startDuel } = useGamePlatform();
@@ -55,14 +56,14 @@ export const DuelMatchmakingModal: React.FC = () => {
             <div className="relative flex items-center justify-center mb-6">
               <span className="animate-ping absolute inline-flex h-24 w-24 rounded-full bg-amber-400 opacity-20" />
               <span className="animate-pulse absolute inline-flex h-16 w-16 rounded-full bg-amber-500/30" />
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
-                <Swords className="w-8 h-8 text-slate-950 stroke-[2.5]" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#850120] to-rose-950 flex items-center justify-center shadow-lg shadow-rose-950/50 border border-rose-700/50 p-2">
+                <SnakeLogo size={36} color="#ffffff" glow />
               </div>
             </div>
 
             <h3 className="text-xl font-extrabold text-white">Searching for Worthy Opponent…</h3>
             <p className="mt-1 text-xs text-slate-400">
-              Matching player around your 2,150 Elo rating
+              Matching player around your 2,150 Elo rating in Viper Arena
             </p>
 
             <div className="mt-6 flex items-center gap-2 bg-slate-950 px-4 py-2 rounded-xl border border-slate-800">
@@ -82,12 +83,14 @@ export const DuelMatchmakingModal: React.FC = () => {
         ) : (
           /* Setup Duel Options */
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Swords className="w-5 h-5 text-amber-400" />
-              <h2 className="text-xl font-extrabold text-white">Create or Join Duel</h2>
+            <div className="flex items-center gap-2.5 mb-1">
+              <div className="w-7 h-7 rounded-lg bg-rose-950 border border-rose-800 flex items-center justify-center p-1">
+                <SnakeLogo size={18} color="#e11d48" />
+              </div>
+              <h2 className="text-xl font-extrabold text-white">Viper Duel Matchmaking</h2>
             </div>
             <p className="text-xs text-slate-400 mb-6">
-              Select game mode and chips wager to enter the ranked 1v1 arena.
+              Select game mode and chips wager to enter the ranked 1v1 Viper arena.
             </p>
 
             {/* Game Selector */}
@@ -97,9 +100,9 @@ export const DuelMatchmakingModal: React.FC = () => {
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'domino' as GameId, name: 'Domino Duel', icon: '🀡' },
-                  { id: 'joker' as GameId, name: 'Joker Cards', icon: '🃏' },
-                  { id: 'poker' as GameId, name: 'Heads-Up Poker', icon: '♠' },
+                  { id: 'domino' as GameId, name: 'Viper Domino', icon: '🀡' },
+                  { id: 'joker' as GameId, name: 'Viper Joker', icon: '🃏' },
+                  { id: 'poker' as GameId, name: 'Viper Poker', icon: '♠' },
                 ].map((g) => (
                   <button
                     key={g.id}

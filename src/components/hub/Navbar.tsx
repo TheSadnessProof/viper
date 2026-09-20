@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGamePlatform } from '../../context/GamePlatformContext';
 import { Swords, Flame, Trophy, Coins, Plus } from 'lucide-react';
+import { SnakeLogo } from '../common/SnakeLogo';
 
 export const Navbar: React.FC = () => {
   const { currentView, setCurrentView, user, setIsMatchmakingOpen } = useGamePlatform();
@@ -13,19 +14,19 @@ export const Navbar: React.FC = () => {
           onClick={() => setCurrentView('hub')}
           className="flex items-center gap-3 cursor-pointer group"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform duration-200">
-            <Swords className="w-5 h-5 text-slate-950 stroke-[2.5]" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#850120] via-rose-950 to-slate-900 border border-rose-900/50 flex items-center justify-center shadow-lg shadow-rose-950/40 group-hover:scale-105 transition-transform duration-200 p-1.5">
+            <SnakeLogo size={26} color="#ffffff" glow />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-                DUEL<span className="text-amber-500">ARENA</span>
+              <span className="font-black text-xl tracking-wider bg-gradient-to-r from-white via-rose-100 to-amber-400 bg-clip-text text-transparent">
+                VIPER<span className="text-amber-500 font-extrabold ml-1">ARENA</span>
               </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                BETA
+              <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                PRO
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 -mt-0.5 hidden sm:block">Classic & Tactical Gaming Hub</p>
+            <p className="text-[11px] text-slate-400 -mt-0.5 hidden sm:block">Tactical & Classic Gaming Hub</p>
           </div>
         </div>
 

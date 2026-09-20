@@ -2,6 +2,7 @@ import React from 'react';
 import { GameCategory } from '../../types';
 import { useGamePlatform } from '../../context/GamePlatformContext';
 import { Swords, Zap, Users, Trophy } from 'lucide-react';
+import { SnakeLogo } from '../common/SnakeLogo';
 
 interface HeroBannerProps {
   selectedCategory: GameCategory;
@@ -28,22 +29,23 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
       <div className="pointer-events-none absolute -top-24 -left-20 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl" />
       <div className="pointer-events-none absolute top-10 -right-20 h-80 w-80 rounded-full bg-rose-500/10 blur-3xl" />
 
-      <div className="relative z-10 max-w-3xl">
-        <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-400 mb-4">
-          <Zap className="h-3.5 w-3.5" />
-          <span>Real-Time 1v1 Skill Duels & Tournaments</span>
-        </div>
+      <div className="relative z-10 flex items-center justify-between gap-8">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/30 bg-rose-950/30 px-3.5 py-1.5 text-xs font-semibold text-rose-300 mb-4 shadow-inner">
+            <SnakeLogo size={16} color="#e11d48" />
+            <span className="tracking-wide">VIPER ARENA — High-Stakes Tactical Gaming</span>
+          </div>
 
-        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
-          Challenge Opponents in <br className="hidden sm:inline" />
-          <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
-            Domino, Joker, and Poker
-          </span>
-        </h1>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+            Strike First in <br className="hidden sm:inline" />
+            <span className="bg-gradient-to-r from-rose-400 via-amber-400 to-orange-400 bg-clip-text text-transparent">
+              Domino, Poker & Joker
+            </span>
+          </h1>
 
-        <p className="mt-3 text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
-          The ultimate gaming hub for classical mind games and high-stakes duels. Wager chips, climb the Elo ladder, or host private tables with friends.
-        </p>
+          <p className="mt-3 text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
+            Welcome to <strong className="text-white">Viper</strong>. Challenge opponents in authentic classic duels, wager chips on premium felt tables, climb the competitive ladder, and prove your mastery.
+          </p>
 
         {/* Action Buttons */}
         <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -78,6 +80,19 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               <span>Matchmaking</span>
             </div>
             <p className="mt-1 font-mono text-lg sm:text-xl font-bold text-cyan-400">&lt; 3.2s Avg</p>
+          </div>
+        </div>
+      </div>
+
+        {/* Decorative Viper Shield on Desktop */}
+        <div className="hidden lg:flex flex-col items-center justify-center p-6 rounded-3xl bg-gradient-to-b from-rose-950/20 to-slate-900/60 border border-rose-900/40 shadow-2xl relative group">
+          <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-[#850120] via-rose-950 to-slate-950 p-1 flex items-center justify-center shadow-2xl shadow-rose-950/60 border border-rose-600/40 relative">
+            <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_50%_30%,rgba(244,63,94,0.25),transparent_70%)] pointer-events-none" />
+            <SnakeLogo size={80} color="#ffffff" glow className="group-hover:scale-105 transition-transform duration-300" />
+          </div>
+          <div className="mt-3 text-center">
+            <span className="text-xs font-black tracking-widest text-white uppercase block">VIPER ARENA</span>
+            <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider">OFFICIAL TABLES</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Award, HelpCircle, RotateCcw, Trophy } from 'lucide-react';
+import { SnakeLogo } from '../common/SnakeLogo';
 
 interface Card {
   id: string;
@@ -60,12 +61,16 @@ export const JokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
             <ArrowLeft className="w-4 h-4" />
             Exit to Hub
           </button>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
-            <h1 className="font-bold text-lg tracking-tight">Joker Duel Arena</h1>
-            <span className="px-2 py-0.5 text-xs rounded bg-amber-950 text-amber-300 border border-amber-800 font-mono">
-              Caucasian Classic
-            </span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#850120] to-rose-950 p-1 flex items-center justify-center border border-rose-800 shadow">
+              <SnakeLogo size={20} color="#ffffff" glow />
+            </div>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-lg tracking-tight">Viper Joker Arena</h1>
+              <span className="px-2 py-0.5 text-xs rounded bg-amber-950 text-amber-300 border border-amber-800 font-mono">
+                Caucasian Classic
+              </span>
+            </div>
           </div>
         </div>
 
@@ -121,7 +126,15 @@ export const JokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
         </div>
 
         {/* Central Card Table Felt */}
-        <div className="my-4 flex-1 min-h-[360px] rounded-3xl game-table-felt border-8 border-[#3b1d06] relative flex flex-col items-center justify-between p-6">
+        <div className="my-4 flex-1 min-h-[360px] rounded-3xl game-table-felt border-8 border-[#3b1d06] relative flex flex-col items-center justify-between p-6 overflow-hidden">
+          {/* Felt Watermark: Viper Snake Logo & Joker Crest */}
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center select-none z-0">
+            <SnakeLogo size={190} color="#10b981" opacity={0.12} />
+            <span className="font-black text-xl tracking-[0.35em] text-emerald-200 uppercase mt-2 opacity-15">
+              VIPER JOKER
+            </span>
+          </div>
+
           {/* North Opponent Seat */}
           <div className="flex items-center gap-3 bg-black/40 px-4 py-1.5 rounded-full border border-emerald-500/20">
             <div className="w-8 h-8 rounded-full bg-slate-800 border border-amber-500/50 flex items-center justify-center text-xs font-bold text-amber-300">

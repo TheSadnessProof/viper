@@ -10,7 +10,8 @@ import { DominoArena } from './components/arena/DominoArena';
 import { JokerArena } from './components/arena/JokerArena';
 import { PokerArena } from './components/arena/PokerArena';
 import { LeaderboardView } from './components/hub/LeaderboardView';
-import { Swords, Shield, Zap } from 'lucide-react';
+import { Shield, Zap } from 'lucide-react';
+import { SnakeLogo } from './components/common/SnakeLogo';
 
 const PlatformContent: React.FC = () => {
   const { currentView, setCurrentView, selectedStake } = useGamePlatform();
@@ -52,8 +53,8 @@ const PlatformContent: React.FC = () => {
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
-                  <Swords className="w-5 h-5 text-amber-500" />
-                  <span>Available Duel Arenas</span>
+                  <SnakeLogo size={20} color="#e11d48" />
+                  <span>Viper Duel Arenas & Tables</span>
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Select a game to start playing or queue for an instant 1v1 match.
@@ -78,12 +79,13 @@ const PlatformContent: React.FC = () => {
       {/* Footer */}
       <footer className="mt-16 border-t border-slate-900 bg-slate-950 py-8 text-xs text-slate-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
+            <SnakeLogo size={18} color="#e11d48" />
             <span className="font-extrabold text-white tracking-tight">
-              DUEL<span className="text-amber-500">ARENA</span>
+              VIPER<span className="text-amber-500">ARENA</span>
             </span>
             <span>—</span>
-            <span>Skill & Classic Gaming Hub</span>
+            <span>Tactical & Classic Gaming Platform</span>
           </div>
 
           <div className="flex items-center gap-6">

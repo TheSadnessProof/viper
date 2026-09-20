@@ -11,6 +11,7 @@ import {
 } from '../../games/domino/dominoLogic';
 import { DominoTileView } from './DominoTileView';
 import { ArrowLeft, RotateCcw, Volume2, VolumeX, ShieldAlert, Award, Sparkles } from 'lucide-react';
+import { SnakeLogo } from '../common/SnakeLogo';
 
 interface DominoArenaProps {
   stake?: number;
@@ -151,12 +152,16 @@ export const DominoArena: React.FC<DominoArenaProps> = ({ stake = 250, onExit })
             Exit to Hub
           </button>
 
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <h1 className="font-bold text-lg tracking-tight">Domino Duel Arena</h1>
-            <span className="px-2 py-0.5 text-xs rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
-              1v1 Ranked
-            </span>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#850120] to-rose-950 p-1 flex items-center justify-center border border-rose-800 shadow">
+              <SnakeLogo size={20} color="#ffffff" glow />
+            </div>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-lg tracking-tight">Viper Domino Arena</h1>
+              <span className="px-2 py-0.5 text-xs rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
+                1v1 Ranked
+              </span>
+            </div>
           </div>
         </div>
 
@@ -229,6 +234,14 @@ export const DominoArena: React.FC<DominoArenaProps> = ({ stake = 250, onExit })
 
         {/* Central Domino Table */}
         <div className="my-4 flex-1 min-h-[360px] rounded-3xl game-table-felt border-8 border-[#2d1706] relative flex flex-col justify-between p-6 overflow-hidden">
+          {/* Felt Watermark: Viper Snake Logo & Club Crest */}
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center select-none z-0">
+            <SnakeLogo size={180} color="#10b981" opacity={0.12} />
+            <span className="font-black text-xl tracking-[0.35em] text-emerald-300 uppercase mt-2 opacity-15">
+              VIPER CLUB
+            </span>
+          </div>
+
           {/* Table Header: Open Ends Indicator */}
           <div className="flex items-center justify-between text-xs text-emerald-200/80 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-xl border border-emerald-500/20">
             <div className="flex items-center gap-2">

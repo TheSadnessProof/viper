@@ -1,5 +1,6 @@
 import React from 'react';
-import { Trophy, Medal, Flame } from 'lucide-react';
+import { Medal, Flame } from 'lucide-react';
+import { SnakeLogo } from '../common/SnakeLogo';
 
 interface LeaderboardEntry {
   rank: number;
@@ -24,12 +25,12 @@ export const LeaderboardView: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto py-8">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-          <Trophy className="w-6 h-6" />
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#850120] to-rose-950 border border-rose-800 flex items-center justify-center p-1.5 shadow-lg shadow-rose-950/40">
+          <SnakeLogo size={24} color="#ffffff" glow />
         </div>
         <div>
-          <h2 className="text-2xl font-extrabold text-white">Global Arena Leaderboards</h2>
-          <p className="text-xs text-slate-400">Updated every 5 minutes across all ranked duel games.</p>
+          <h2 className="text-2xl font-extrabold text-white">Viper Global Leaderboards</h2>
+          <p className="text-xs text-slate-400">Rankings across all official Viper duel arena tables.</p>
         </div>
       </div>
 
