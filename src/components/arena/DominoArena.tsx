@@ -10,15 +10,23 @@ import {
   getBotMove,
 } from '../../games/domino/dominoLogic';
 import { DominoTileView } from './DominoTileView';
-import { ArrowLeft, RotateCcw, Volume2, VolumeX, ShieldAlert, Award, Sparkles } from 'lucide-react';
+import { RotateCcw, Volume2, VolumeX, ShieldAlert, Award, Sparkles } from 'lucide-react';
+import { GameWindowControls } from './GameWindowControls';
 import { SnakeLogo } from '../common/SnakeLogo';
 
 interface DominoArenaProps {
   stake?: number;
   onExit: () => void;
+  showNavbar?: boolean;
+  onToggleNavbar?: () => void;
 }
 
-export const DominoArena: React.FC<DominoArenaProps> = ({ stake = 250, onExit }) => {
+export const DominoArena: React.FC<DominoArenaProps> = ({
+  stake = 250,
+  onExit,
+  showNavbar,
+  onToggleNavbar,
+}) => {
   const [gameState, setGameState] = useState<DominoGameState>(() => initDominoGame());
   const [selectedTile, setSelectedTile] = useState<DominoTile | null>(null);
   const [targetPlacement, setTargetPlacement] = useState<{ canLeft: boolean; canRight: boolean } | null>(null);
@@ -141,55 +149,36 @@ export const DominoArena: React.FC<DominoArenaProps> = ({ stake = 250, onExit })
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* Top Arena Navigation Bar */}
-      <header className="h-16 px-6 border-b border-slate-800 bg-slate-900/70 backdrop-blur-md flex items-center justify-between z-20">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onExit}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition font-medium text-sm"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Exit to Hub
-          </button>
-
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#850120] to-rose-950 p-1 flex items-center justify-center border border-rose-800 shadow">
-              <SnakeLogo size={20} color="#ffffff" glow />
+      {/* Game Window Controls Bar */}
+      <GameWindowControls
+        gameTitle="Domino Arena"
+        gameTag="1v1 Ranked"
+        onExit={onExit}
+        showNavbar={showNavbar}
+        onToggleNavbar={onToggleNavbar}
+        extraControls={
+          <>
+            <div className="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1 rounded-full border border-amber-500/30 text-xs">
+              <span className="text-amber-400 font-semibold uppercase text-[10px]">Pot:</span>
+              <span className="text-amber-300 font-bold font-mono text-xs">🪙 {stake * 2}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg tracking-tight">Viper Domino Arena</h1>
-              <span className="px-2 py-0.5 text-xs rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">
-                1v1 Ranked
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Stake & Pot Display */}
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2 bg-slate-950/80 px-4 py-1.5 rounded-full border border-amber-500/30">
-            <span className="text-amber-400 text-xs font-semibold uppercase tracking-wider">Stake:</span>
-            <span className="text-amber-300 font-bold font-mono">🪙 {stake * 2} Pot</span>
-          </div>
-
-          <div className="flex items-center gap-2">
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className="p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
+              className="p-1.5 text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
               title={soundEnabled ? 'Mute SFX' : 'Enable SFX'}
             >
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+              {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-emerald-400" /> : <VolumeX className="w-3.5 h-3.5" />}
             </button>
             <button
               onClick={handleRestart}
-              className="p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
-              title="Restart Round"
+              className="p-1.5 text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
+              title="Restart Match"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
-          </div>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       {/* Duel Layout */}
       <main className="flex-1 flex flex-col p-4 md:p-6 max-w-7xl w-full mx-auto justify-between relative">

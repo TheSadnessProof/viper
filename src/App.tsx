@@ -7,6 +7,7 @@ import { CombatView } from './components/views/CombatView';
 import { DominoArena } from './components/arena/DominoArena';
 import { JokerArena } from './components/arena/JokerArena';
 import { PokerArena } from './components/arena/PokerArena';
+import { ChessArena } from './games/chess/ChessArena';
 import { SnakeLogo } from './components/common/SnakeLogo';
 
 function getCategoryFromLocation(): NavCategory {
@@ -28,7 +29,8 @@ function getCategoryFromLocation(): NavCategory {
 
 export const App: React.FC = () => {
   const [currentCategory, setCurrentCategory] = useState<NavCategory>(getCategoryFromLocation);
-  const [activeArena, setActiveArena] = useState<'joker' | 'poker' | 'domino' | null>(null);
+  const [activeArena, setActiveArena] = useState<'joker' | 'poker' | 'domino' | 'chess' | null>(null);
+  const [inGameShowNavbar, setInGameShowNavbar] = useState(false);
 
   const navigateTo = (cat: NavCategory) => {
     setCurrentCategory(cat);
@@ -42,6 +44,7 @@ export const App: React.FC = () => {
     if (gameId === 'joker') setActiveArena('joker');
     else if (gameId === 'poker') setActiveArena('poker');
     else if (gameId === 'domino') setActiveArena('domino');
+    else if (gameId === 'chess') setActiveArena('chess');
   };
 
   useEffect(() => {
@@ -54,16 +57,51 @@ export const App: React.FC = () => {
   }, []);
 
   // If a game arena is actively running, render it full screen
-  if (activeArena === 'joker') {
-    return <JokerArena onExit={() => setActiveArena(null)} />;
-  }
-
-  if (activeArena === 'poker') {
-    return <PokerArena onExit={() => setActiveArena(null)} />;
-  }
-
-  if (activeArena === 'domino') {
-    return <DominoArena onExit={() => setActiveArena(null)} />;
+  if (activeArena) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+        {/* Same standard navigation bar if user toggled it on */}
+        {inGameShowNavbar && (
+          <Navbar
+            activeCategory={currentCategory}
+            onSelectCategory={(cat) => {
+              setActiveArena(null);
+              navigateTo(cat);
+            }}
+          />
+        )}
+        <div className="flex-1 w-full flex flex-col">
+          {activeArena === 'joker' && (
+            <JokerArena
+              onExit={() => setActiveArena(null)}
+              showNavbar={inGameShowNavbar}
+              onToggleNavbar={() => setInGameShowNavbar((prev) => !prev)}
+            />
+          )}
+          {activeArena === 'poker' && (
+            <PokerArena
+              onExit={() => setActiveArena(null)}
+              showNavbar={inGameShowNavbar}
+              onToggleNavbar={() => setInGameShowNavbar((prev) => !prev)}
+            />
+          )}
+          {activeArena === 'domino' && (
+            <DominoArena
+              onExit={() => setActiveArena(null)}
+              showNavbar={inGameShowNavbar}
+              onToggleNavbar={() => setInGameShowNavbar((prev) => !prev)}
+            />
+          )}
+          {activeArena === 'chess' && (
+            <ChessArena
+              onExit={() => setActiveArena(null)}
+              showNavbar={inGameShowNavbar}
+              onToggleNavbar={() => setInGameShowNavbar((prev) => !prev)}
+            />
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (

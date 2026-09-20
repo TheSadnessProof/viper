@@ -17,7 +17,7 @@ export const BOARD_GAMES: GameVisualItem[] = [
     title: 'Chess',
     category: 'board',
     coverImage: '/covers/chess.jpg',
-    isPlayable: false,
+    isPlayable: true,
     accentBorder: 'border-sky-500/30',
     glowColor: 'from-sky-500/20',
   },

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeft, RotateCcw, Shield } from 'lucide-react';
+import { RotateCcw, Shield } from 'lucide-react';
+import { GameWindowControls } from './GameWindowControls';
 import { SnakeLogo } from '../common/SnakeLogo';
 
 interface PlayingCard {
@@ -7,7 +8,17 @@ interface PlayingCard {
   suit: '♠' | '♥' | '♦' | '♣';
 }
 
-export const PokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
+interface PokerArenaProps {
+  onExit: () => void;
+  showNavbar?: boolean;
+  onToggleNavbar?: () => void;
+}
+
+export const PokerArena: React.FC<PokerArenaProps> = ({
+  onExit,
+  showNavbar,
+  onToggleNavbar,
+}) => {
   const [pot, setPot] = useState(300);
   const [playerChips, setPlayerChips] = useState(2450);
   const [opponentChips, setOpponentChips] = useState(2550);
@@ -72,43 +83,30 @@ export const PokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* Header */}
-      <header className="h-16 px-6 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md flex items-center justify-between z-20">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onExit}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition font-medium text-sm"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Exit to Hub
-          </button>
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#850120] to-rose-950 p-1 flex items-center justify-center border border-rose-800 shadow">
-              <SnakeLogo size={20} color="#ffffff" glow />
+      {/* Game Window Controls Bar */}
+      <GameWindowControls
+        gameTitle="Poker Room"
+        gameTag="No-Limit 1v1"
+        onExit={onExit}
+        showNavbar={showNavbar}
+        onToggleNavbar={onToggleNavbar}
+        extraControls={
+          <>
+            <div className="hidden sm:flex items-center gap-1.5 bg-slate-900 px-2.5 py-1 rounded-full border border-slate-700 text-xs">
+              <Shield className="w-3 h-3 text-emerald-400" />
+              <span className="text-slate-300 text-[11px]">RNG Verified</span>
             </div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg tracking-tight">Viper Poker Room</h1>
-              <span className="px-2 py-0.5 text-xs rounded bg-red-950 text-rose-300 border border-red-800 font-mono">
-                No-Limit 1v1
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 bg-slate-900 px-3 py-1 rounded-full border border-slate-700 text-xs">
-            <Shield className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-slate-300">RNG Verified</span>
-          </div>
-          <button
-            onClick={handleReset}
-            className="p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
-            title="Deal Next Hand"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-        </div>
-      </header>
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-1.5 px-2.5 py-1 text-slate-300 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition text-xs font-semibold"
+              title="Deal Next Hand"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Deal Hand</span>
+            </button>
+          </>
+        }
+      />
 
       {/* Arena Body */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col justify-between">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Award, HelpCircle, RotateCcw, Trophy } from 'lucide-react';
+import { Award, HelpCircle, RotateCcw, Trophy } from 'lucide-react';
+import { GameWindowControls } from './GameWindowControls';
 import { SnakeLogo } from '../common/SnakeLogo';
 
 interface Card {
@@ -20,7 +21,17 @@ const INITIAL_HAND: Card[] = [
   { id: 'c8', suit: '♥', value: 'K' },
 ];
 
-export const JokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
+interface JokerArenaProps {
+  onExit: () => void;
+  showNavbar?: boolean;
+  onToggleNavbar?: () => void;
+}
+
+export const JokerArena: React.FC<JokerArenaProps> = ({
+  onExit,
+  showNavbar,
+  onToggleNavbar,
+}) => {
   const [hand, setHand] = useState<Card[]>(INITIAL_HAND);
   const [trickPile, setTrickPile] = useState<Array<{ player: string; card: Card }>>([
     { player: 'Giga (East)', card: { id: 'bot1', suit: '♥', value: 'Q' } },
@@ -51,46 +62,32 @@ export const JokerArena: React.FC<{ onExit: () => void }> = ({ onExit }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* Top Header */}
-      <header className="h-16 px-6 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md flex items-center justify-between z-20">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onExit}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition font-medium text-sm"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Exit to Hub
-          </button>
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#850120] to-rose-950 p-1 flex items-center justify-center border border-rose-800 shadow">
-              <SnakeLogo size={20} color="#ffffff" glow />
-            </div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg tracking-tight">Viper Joker Arena</h1>
-              <span className="px-2 py-0.5 text-xs rounded bg-amber-950 text-amber-300 border border-amber-800 font-mono">
-                Caucasian Classic
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowRules(!showRules)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold transition"
-          >
-            <HelpCircle className="w-4 h-4 text-amber-400" />
-            How to Play
-          </button>
-          <button
-            onClick={resetGame}
-            className="p-2 text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
-            title="Reset Game"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-        </div>
-      </header>
+      {/* Game Window Controls Bar */}
+      <GameWindowControls
+        gameTitle="Joker Arena"
+        gameTag="Caucasian Classic"
+        onExit={onExit}
+        showNavbar={showNavbar}
+        onToggleNavbar={onToggleNavbar}
+        extraControls={
+          <>
+            <button
+              onClick={() => setShowRules(!showRules)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold transition"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">How to Play</span>
+            </button>
+            <button
+              onClick={resetGame}
+              className="p-1.5 text-slate-400 hover:text-white rounded-lg bg-slate-800 hover:bg-slate-700 transition"
+              title="Reset Game"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </>
+        }
+      />
 
       {/* Main Arena */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col justify-between relative">
