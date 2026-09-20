@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SnakeLogo } from '../common/SnakeLogo';
-import { User } from 'lucide-react';
+import { User, Swords, Layers, LayoutGrid } from 'lucide-react';
 
-export const Navbar: React.FC = () => {
+export type NavCategory = 'pvp' | 'cards' | 'board';
+
+interface NavbarProps {
+  activeCategory?: NavCategory;
+  onSelectCategory?: (category: NavCategory) => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({
+  activeCategory: controlledCategory,
+  onSelectCategory,
+}) => {
+  const [internalCategory, setInternalCategory] = useState<NavCategory>('pvp');
+  const active = controlledCategory ?? internalCategory;
+
+  const handleSelect = (cat: NavCategory) => {
+    setInternalCategory(cat);
+    onSelectCategory?.(cat);
+  };
+
+  const categories = [
+    { id: 'pvp' as const, label: 'PvP', icon: Swords, badge: '1v1' },
+    { id: 'cards' as const, label: 'Cards', icon: Layers },
+    { id: 'board' as const, label: 'Board', icon: LayoutGrid },
+  ];
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -15,6 +39,40 @@ export const Navbar: React.FC = () => {
             Viper
           </span>
         </div>
+
+        {/* Categories Navigation */}
+        <nav className="flex items-center gap-1.5 bg-slate-900/70 p-1 rounded-2xl border border-slate-800 shadow-inner">
+          {categories.map((cat) => {
+            const Icon = cat.icon;
+            const isSelected = active === cat.id;
+
+            return (
+              <button
+                key={cat.id}
+                onClick={() => handleSelect(cat.id)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-2 ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-[#850120] to-rose-900 text-white shadow-md shadow-rose-950/50 border border-rose-700/50'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-amber-300' : 'text-slate-400'}`} />
+                <span>{cat.label}</span>
+                {cat.badge && (
+                  <span
+                    className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-extrabold ${
+                      isSelected
+                        ? 'bg-amber-400 text-slate-950 shadow-sm'
+                        : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    {cat.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
 
         {/* Profile / Auth Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
